@@ -38,7 +38,8 @@ The CSV file's columns should be pretty self-explanatory:
 * Display name: The visual name that shows up in the Printers & Scanners pane of the System Preferences, and in the print dialogue boxes.  Also used in the Munki pkginfo.
 * Address: The IP or DNS address of the printer. The template uses the form: `lpr://ADDRESS`.  Change to another protocol in the template if necessary.
 * Driver: Name of the driver file in /Library/Printers/PPDs/Contents/Resources/.
-* Description: Used only in the Munki pkginfo. 
+* Description: Used only in the Munki pkginfo.
+* MunkiRequires: List of munki packages to be listed as requirements in pkginfo
 * Options: Any printer options that should be specified. These **must** be space-delimited key=value pairs, such as "HPOptionDuplexer=True OutputMode=normal".  **Do not use commas to separate the options, because this is a comma-separated values file.**
 
 The CSV file is not sanity-checked for invalid entries or blank fields, so double check your file and test your pkginfos thoroughly.
@@ -90,7 +91,7 @@ As in the above CSV section, the arguments are all the same:
 * `--location`: The "location" of the printer. If not provided, this will default to the value of `--printername`.
 * `--displayname`: The visual name that shows up in the Printers & Scanners pane of the System Preferences, and in the print dialogue boxes.  Also used in the Munki pkginfo.  If not provided, this will default to the value of `--printername`.
 * `--desc`: Used only in the Munki pkginfo. If not provided, will default to an empty string ("").
-* `--options`: Any number of printer options that should be specified. These should be space-delimited key=value pairs, such as "HPOptionDuplexer=True OutputMode=normal". 
+* `--options`: Any number of printer options that should be specified. These should be space-delimited key=value pairs, such as "HPOptionDuplexer=True OutputMode=normal".
 * `--version`: The version number of the Munki pkginfo. Defaults to "1.0".
 
 ### Figuring out options:
@@ -169,7 +170,7 @@ cmd = ['/usr/bin/lpoptions', '-p', 'MyPrinterQueue']
 proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 (lpoptOut, lpoptErr) = proc.communicate()
 
-#Note: lpoptions -p printername will never fail. If MyPrinterQueue does not exist, it 
+#Note: lpoptions -p printername will never fail. If MyPrinterQueue does not exist, it
 #will still exit 0, but just produce no output.  
 #Thanks, cups, I was having a good day until now.
 
@@ -189,7 +190,7 @@ for option in lpoptLongOut.splitlines():
 optionDict = dict()                
 for builtOption in shlex.split(lpoptOut):
     optionDict[builtOption.split("=")[0]] = builtOption.split("=")[1]
-    
+
 comparisonDict = { "device-uri":"lpd://10.0.0.1", "printer-info":"My Printer Queue", "printer-location":"Tech Office", "printer-make-and-model":"HP officejet 5500 series.ppd" }
 for keyName in comparisonDict.keys():
     if not comparisonDict[keyName] == optionDict[keyName]:
