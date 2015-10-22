@@ -44,6 +44,7 @@ if args.csv:
             requirementList = ''
             if row[6] != "":
                 requirementList = row[6].split(" ")
+                newPlist['requires'] = requirementList
             theOptionString = ''
             if row[7] != "":
                 theOptionString = getOptionsString(row[7].split(" "))
