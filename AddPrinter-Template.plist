@@ -34,8 +34,8 @@ cmd = ['/usr/bin/lpoptions', '-p', 'PRINTERNAME']
 proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 (lpoptOut, lpoptErr) = proc.communicate()
 
-#Note: lpoptions -p printername will never fail. If PRINTERNAME does not exist, it 
-#will still exit 0, but just produce no output.  
+#Note: lpoptions -p printername will never fail. If PRINTERNAME does not exist, it
+#will still exit 0, but just produce no output.
 #Thanks, cups, I was having a good day until now.
 
 for option in lpoptLongOut.splitlines():
@@ -51,10 +51,10 @@ for option in lpoptLongOut.splitlines():
                 print "Found mismatch: %s is '%s', should be '%s'" % (myOption, printerOptions[myOption], actualOptionValue)
                 sys.exit(0)
 
-optionDict = dict()                
+optionDict = dict()
 for builtOption in shlex.split(lpoptOut):
     optionDict[builtOption.split("=")[0]] = builtOption.split("=")[1]
-    
+
 comparisonDict = { "device-uri":"ADDRESS", "printer-info":"DISPLAY_NAME", "printer-location":"LOCATION", "printer-make-and-model":"DRIVER" }
 for keyName in comparisonDict.keys():
     if not comparisonDict[keyName] == optionDict[keyName]:
@@ -72,6 +72,13 @@ sys.exit(1)</string>
 	<string>#!/usr/bin/python
 import subprocess
 import sys
+
+# If specified PPD not found, fail.
+if not os.path.exists( "DRIVER" ):
+	print "PPD DRIVER not found."
+	sys.exit(1)
+
+
 
 # Populate these options if you want to set specific options for the printer. E.g. duplexing installed, etc.
 printerOptions = { OPTIONS }
@@ -101,7 +108,7 @@ proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 if lpadminErr:
     print "Error: %s" % lpadminErr
     sys.exit(1)
-print "Results: %s" % lpadminOut    
+print "Results: %s" % lpadminOut
 sys.exit(0)</string>
 	<key>unattended_install</key>
 	<true/>
