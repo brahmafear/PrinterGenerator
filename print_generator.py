@@ -26,7 +26,7 @@ parser.add_argument('--csv', help='Path to CSV file containing printer info. If 
 args = parser.parse_args()
 
 
-f = open('Printer-Template.plist', 'rb')
+f = open('AddPrinter-Template.plist', 'rb')
 templatePlist = readPlist(f)
 f.close()
 
