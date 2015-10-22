@@ -72,6 +72,7 @@ sys.exit(1)</string>
 	<string>#!/usr/bin/python
 import subprocess
 import sys
+import os.path
 
 # If specified PPD not found, fail.
 if not os.path.exists( "DRIVER" ):

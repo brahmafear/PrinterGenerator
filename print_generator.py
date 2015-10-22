@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import os
-import os.path
 from plistlib import readPlist, writePlist
 import csv
 import argparse
